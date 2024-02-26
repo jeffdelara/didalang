@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-type testStruct struct {
+type testToken struct {
 	expectedType    token.TokenType
 	expectedLiteral string
 }
@@ -13,7 +13,7 @@ type testStruct struct {
 func TestNextToken(t *testing.T) {
 	input := "=+(),;"
 
-	tests := []testStruct{
+	tests := []testToken{
 		{token.ASSIGN, "="},
 		{token.PLUS, "+"},
 		{token.LPAREN, "("},
@@ -39,7 +39,7 @@ func TestLexer_NextToken(t *testing.T) {
 		let result = add(five, ten);
 	`
 
-	tests := []testStruct{
+	tests := []testToken{
 		{token.LET, "let"},
 		{token.IDENT, "five"},
 		{token.ASSIGN, "="},
@@ -49,8 +49,10 @@ func TestLexer_NextToken(t *testing.T) {
 		{token.IDENT, "ten"},
 		{token.ASSIGN, "="},
 		{token.INT, "10"},
+		{token.SEMICOLON, ";"},
 		{token.LET, "let"},
 		{token.IDENT, "add"},
+		{token.ASSIGN, "="},
 		{token.FUNCTION, "fn"},
 		{token.LPAREN, "("},
 		{token.IDENT, "x"},
@@ -80,7 +82,7 @@ func TestLexer_NextToken(t *testing.T) {
 	evaluate(l, tests, t)
 }
 
-func evaluate(l *Lexer, tests []testStruct, t *testing.T) {
+func evaluate(l *Lexer, tests []testToken, t *testing.T) {
 	for i, tt := range tests {
 		tok := l.NextToken()
 
